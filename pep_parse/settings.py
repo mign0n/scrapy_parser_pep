@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).parent.parent
 RESULTS_DIR = 'results'
 
 FEEDS = {
-    Path(RESULTS_DIR).joinpath('pep_%(time)s.csv'): {
+    f'{RESULTS_DIR}/pep_%(time)s.csv': {
         'fields': ['number', 'name', 'status'],
         'format': 'csv',
         'overwrite': True,
