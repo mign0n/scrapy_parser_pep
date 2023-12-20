@@ -41,5 +41,5 @@ pip install -r requirements.txt
 
 ## Авторы
 
-- [mign0n](https://github.com/mign0n)
+- [Олег Сапожников](https://github.com/mign0n)
 - [yandex-praktikum](https://github.com/yandex-praktikum)
