@@ -7,28 +7,30 @@ from pep_parse.settings import BASE_DIR, DATETIME_FORMAT, RESULTS_DIR
 
 class PepParsePipeline:
     def __init__(self):
-        results_dir = BASE_DIR / RESULTS_DIR
-        results_dir.mkdir(exist_ok=True)
-        now_formatted = dt.now().strftime(DATETIME_FORMAT)
-        self.file_path = f'{results_dir}/status_summary_{now_formatted}.csv'
-        self.counter = defaultdict(int)
-        self.results = [('Статус', 'Количество')]
+        self.results_dir = BASE_DIR / RESULTS_DIR
+        self.results_dir.mkdir(exist_ok=True)
 
     def open_spider(self, spider):
-        ...
+        self.counter = defaultdict(int)
+        now_formatted = dt.now().strftime(DATETIME_FORMAT)
+        self.file_path = (
+            f'{self.results_dir}/status_summary_{now_formatted}.csv'
+        )
 
     def process_item(self, item, spider):
         self.counter[item['status']] += 1
         return item
 
     def close_spider(self, spider):
-        self.results.extend(self.counter.items())
-        self.results.append(('Всего:', sum(self.counter.values())))
-
         with open(self.file_path, 'w', encoding='utf-8') as f:
             csv.writer(
                 f,
                 dialect=csv.unix_dialect(),
+                quoting=csv.QUOTE_MINIMAL,
             ).writerows(
-                self.results,
+                [
+                    ('Статус', 'Количество'),
+                    *self.counter.items(),
+                    ('Всего:', sum(self.counter.values())),
+                ]
             )
