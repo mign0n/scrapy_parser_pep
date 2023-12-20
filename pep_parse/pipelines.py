@@ -12,25 +12,24 @@ class PepParsePipeline:
 
     def open_spider(self, spider):
         self.counter = defaultdict(int)
-        now_formatted = dt.now().strftime(DATETIME_FORMAT)
-        self.file_path = (
-            f'{self.results_dir}/status_summary_{now_formatted}.csv'
-        )
 
     def process_item(self, item, spider):
         self.counter[item['status']] += 1
         return item
 
     def close_spider(self, spider):
-        with open(self.file_path, 'w', encoding='utf-8') as f:
+        now_formatted = dt.now().strftime(DATETIME_FORMAT)
+        with open(
+            f'{self.results_dir}/status_summary_{now_formatted}.csv',
+            'w',
+            encoding='utf-8',
+        ) as f:
             csv.writer(
                 f,
                 dialect=csv.unix_dialect(),
                 quoting=csv.QUOTE_MINIMAL,
-            ).writerows(
-                [
-                    ('Статус', 'Количество'),
-                    *self.counter.items(),
-                    ('Всего:', sum(self.counter.values())),
-                ]
-            )
+            ).writerows((
+                ('Статус', 'Количество'),
+                *self.counter.items(),
+                ('Всего:', sum(self.counter.values())),
+            ))

@@ -1,10 +1,10 @@
 Статус,Количество
 Active,32
-Withdrawn,57
-Superseded,23
 Final,284
-Deferred,36
 Rejected,124
+Deferred,36
+Superseded,23
+Withdrawn,57
 Accepted,44
 Draft,30
 Provisional,2
